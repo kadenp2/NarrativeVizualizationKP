@@ -1,19 +1,1 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-}
-
-#title_text {
-    text-align: center;
-    margin-top: 50px;
-}
-
-#chart {
-    width: 100%;
-    max-width: 960px;
-    height: 500px;
-    margin: 0 auto;
-}
 
