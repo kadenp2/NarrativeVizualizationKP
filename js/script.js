@@ -1,24 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Load and render the obesity chart
-    d3.csv('data/obesitydata.csv').then(function(data) {
-        renderLineChart(data, '#obesity-chart', 'Year', 'Obesity rate', 'steelblue');
-    });
-
-    // Load and render the life expectancy chart
-    d3.csv('data/life-expectancy.csv').then(function(data) {
-        renderLineChart(data, '#life-expectancy-chart', 'Year', 'Life expectancy', 'green');
-    });
-
-    // Load and render the emissions chart
+    // Load and render the CO₂ emissions chart
     d3.csv('data/CO2emissions.csv').then(function(data) {
-        renderLineChart(data, '#emissions-chart', 'Year', 'Annual CO₂ emissions', 'red');
+        console.log('CO2 Emissions Data:', data); // Debugging
+        renderScatterPlot(data, '#emissions-chart', 'Year', 'Annual CO₂ emissions', 'Population', 'red');
+    }).catch(function(error) {
+        console.error('Error loading CO2 emissions data:', error);
     });
 
-    // Function to render line chart
-    function renderLineChart(data, selector, xKey, yKey, strokeColor) {
+    // Function to render scatter plot
+    function renderScatterPlot(data, selector, xKey, yKey, sizeKey, color) {
         data.forEach(d => {
             d[xKey] = +d[xKey];
             d[yKey] = +d[yKey];
+            d[sizeKey] = +d[sizeKey];
         });
 
         const margin = { top: 20, right: 80, bottom: 50, left: 50 },
@@ -32,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
                       .append("g")
                       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        const x = d3.scaleTime()
+        const x = d3.scaleLinear()
                     .domain(d3.extent(data, d => d[xKey]))
                     .range([0, width]);
 
@@ -41,46 +35,61 @@ document.addEventListener('DOMContentLoaded', function() {
                     .nice()
                     .range([height, 0]);
 
-        const line = d3.line()
-                       .x(d => x(d[xKey]))
-                       .y(d => y(d[yKey]));
+        const size = d3.scaleSqrt()
+                       .domain([0, d3.max(data, d => d[sizeKey])])
+                       .range([1, 40]);
 
         svg.append("g")
            .attr("transform", `translate(0,${height})`)
-           .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+           .call(d3.axisBottom(x).ticks(10, d3.format(",.0f")));
 
         svg.append("g")
            .call(d3.axisLeft(y));
 
-        svg.append("path")
-           .datum(data)
-           .attr("fill", "none")
-           .attr("stroke", strokeColor)
-           .attr("stroke-width", 1.5)
-           .attr("d", line);
+        svg.append("text")
+           .attr("x", width / 2)
+           .attr("y", height + margin.bottom)
+           .attr("text-anchor", "middle")
+           .attr("font-size", "16px")
+           .text(xKey);
+
+        svg.append("text")
+           .attr("x", -height / 2)
+           .attr("y", -margin.left)
+           .attr("text-anchor", "middle")
+           .attr("font-size", "16px")
+           .attr("transform", "rotate(-90)")
+           .text(yKey);
+
+        const tooltip = d3.select("body")
+                          .append("div")
+                          .attr("class", "tooltip")
+                          .style("opacity", 0);
+
+        const mouseover = function(event, d) {
+            tooltip.transition()
+                   .duration(200)
+                   .style("opacity", .9);
+            tooltip.html(`${xKey}: ${d[xKey]}<br>${yKey}: ${d[yKey]}<br>${sizeKey}: ${d[sizeKey]}`)
+                   .style("left", (event.pageX + 5) + "px")
+                   .style("top", (event.pageY - 28) + "px");
+        };
+
+        const mouseout = function() {
+            tooltip.transition()
+                   .duration(500)
+                   .style("opacity", 0);
+        };
 
         svg.selectAll("dot")
            .data(data)
            .enter().append("circle")
            .attr("cx", d => x(d[xKey]))
            .attr("cy", d => y(d[yKey]))
-           .attr("r", 5)
-           .attr("fill", strokeColor)
-           .on("mouseover", function(event, d) {
-               d3.select(this).attr("r", 8).attr("fill", "orange");
-               svg.append("text")
-                  .attr("id", "tooltip")
-                  .attr("x", x(d[xKey]) + 10)
-                  .attr("y", y(d[yKey]))
-                  .attr("dy", ".35em")
-                  .attr("font-size", "12px")
-                  .attr("font-weight", "bold")
-                  .text(`${xKey}: ${d[xKey]}, ${yKey}: ${d[yKey]}`);
-           })
-           .on("mouseout", function(d) {
-               d3.select(this).attr("r", 5).attr("fill", strokeColor);
-               d3.select("#tooltip").remove();
-           });
+           .attr("r", d => size(d[sizeKey]))
+           .attr("fill", color)
+           .style("opacity", 0.7)
+           .on("mouseover", mouseover)
+           .on("mouseout", mouseout);
     }
 });
-
