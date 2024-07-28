@@ -18,6 +18,17 @@
                 <p>This visualization explores the trends in obesity, life expectancy, and CO₂ emissions over the years.</p>
             </div>
         </div>
+        <div class="section" id="co2-emissions">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>CO₂ Emissions Over the Years</h2>
+                        <div id="emissions-chart"></div>
+                        <p class="annotation">This chart shows the CO₂ emissions over the years for various countries.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="section" id="obesity">
             <div class="container">
                 <div class="row">
@@ -40,17 +51,6 @@
                 </div>
             </div>
         </div>
-        <div class="section" id="emissions">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2>CO₂ Emissions Over the Years</h2>
-                        <div id="emissions-chart"></div>
-                        <p class="annotation">This chart shows the CO₂ emissions over the years for various countries.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js" integrity="sha512-gSf3NCgs6wWEdztl1e6vUqtRP884ONnCNzCpomdoQ0xXsk06lrxJsR7jX5yM/qAGkPGsps+4bLV5IEjhOZX+gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -60,8 +60,8 @@
         new fullpage('#fullpage', {
             autoScrolling: true,
             navigation: true,
-            anchors: ['intro', 'obesity', 'life-expectancy', 'emissions'],
-            navigationTooltips: ['Intro', 'Obesity', 'Life Expectancy', 'Emissions'],
+            anchors: ['intro', 'co2-emissions', 'obesity', 'life-expectancy'],
+            navigationTooltips: ['Intro', 'CO₂ Emissions', 'Obesity', 'Life Expectancy'],
             showActiveTooltip: true,
             scrollingSpeed: 1000,
         });
