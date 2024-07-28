@@ -4,44 +4,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obesity Data Visualization</title>
+    <title>Narrative Visualization Project</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css" integrity="sha512-4rPgyv5iG0PZw8E+oRdfN/Gq+yilzt9rQ8Yci2jJ15rAyBmF0HBE4wFjBkoB72cxBeg63uobaj1UcNt/scV93w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
     <div id="fullpage">
-        <div class="section">
+        <div class="section" id="intro">
             <div id="title_text">
-                <h1>Obesity Data Visualization</h1>
-                <p>This visualization shows the obesity rate over the years.</p>
-            </div>       
+                <h1>Exploring Global Trends</h1>
+                <h3>Obesity, Life Expectancy, and CO₂ Emissions</h3>
+                <p>This visualization explores the trends in obesity, life expectancy, and CO₂ emissions over the years.</p>
+            </div>
         </div>
-
-        <div class="section">
+        <div class="section" id="obesity">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="chart"></div>
-                    </div> 
+                        <h2>Obesity Rates Over the Years</h2>
+                        <div id="obesity-chart"></div>
+                        <p class="annotation">This chart shows the obesity rates over the years for various countries.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" id="life-expectancy">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Life Expectancy Over the Years</h2>
+                        <div id="life-expectancy-chart"></div>
+                        <p class="annotation">This chart shows the life expectancy over the years for various countries.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" id="emissions">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>CO₂ Emissions Over the Years</h2>
+                        <div id="emissions-chart"></div>
+                        <p class="annotation">This chart shows the CO₂ emissions over the years for various countries.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js" integrity="sha512-gSf3NCgs6wWEdztl1e6vUqtRP884ONnCNzCpomdoQ0xXsk06lrxJsR7jX5yM/qAGkPGsps+4bLV5IEjhOZX+gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="js/script.js"></script>
     <script>
         new fullpage('#fullpage', {
             autoScrolling: true,
             navigation: true,
-            anchors: ['intro', 'obesity'],
-            navigationTooltips: ['Intro', 'Obesity Data'],
+            anchors: ['intro', 'obesity', 'life-expectancy', 'emissions'],
+            navigationTooltips: ['Intro', 'Obesity', 'Life Expectancy', 'Emissions'],
             showActiveTooltip: true,
             scrollingSpeed: 1000,
         });
     </script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="js/script.js"></script>
 </body>
 </html>
-
